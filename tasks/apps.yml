@@ -1,0 +1,43 @@
+- name: copy relevant apps
+  copy:
+    src: "{{ git_repo_destination }}/{{ item.0.src }}/"
+    dest: "{{ apps_dir }}/{{ item.0.dest }}/"
+
+# Loads the app's variables file into app_vars. If the app has no variables file,
+# app_vars is set to an empty dict, so variables of a previous app are not reused.
+- name: load app variables
+  include_vars:
+    dir: "{{ git_repo_destination }}/{{ item.0.src }}"
+    files_matching: "^{{ app_variables_file }}$"
+    depth: 1
+    name: app_vars
+
+- name: create dir
+  file:
+    path: "{{ apps_dir }}/{{ item.0.dest }}/{{ item.0.template_dest }}"
+    state: directory
+  with_items:
+  - "{{ item.0.templates }}"
+  loop_control:
+    loop_var: template_file
+  when: item.0.templates is defined
+
+- name: populate templates
+  template:
+    src: "{{ git_repo_destination }}/{{ item.0.src }}/{{ template_directory }}/{{ template_file }}.j2"
+    dest: "{{ apps_dir }}/{{ item.0.dest }}/{{ item.0.template_dest }}/{{ template_file }}.conf"
+  with_items:
+  - "{{ item.0.templates }}"
+  loop_control:
+    loop_var: template_file
+  when: item.0.templates is defined
+
+- name: remove templates directory and variables file
+  file:
+    path: "{{ apps_dir }}/{{ item.0.dest }}/{{ ansible_file }}"
+    state: absent
+  with_items:
+  - "{{ template_directory }}"
+  - "{{ app_variables_file }}"
+  loop_control:
+    loop_var: ansible_file

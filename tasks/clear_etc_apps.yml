@@ -4,12 +4,12 @@
     state: directory
 
 - name: backup files
-  shell: "if [ -d {{ splunk_home }}/etc/apps/{{ item }} ]; then cp -r {{ splunk_home }}/etc/apps/{{ item }} {{ ansible_tmp }}/; fi"
+  shell: "if [ -d {{ apps_dir }}/{{ item }} ]; then cp -r {{ apps_dir }}/{{ item }} {{ ansible_tmp }}/; fi"
   with_items:
   - "{{ splunk_default_apps }}"
 
-- name: empty shcluster directory
-  shell: "/bin/rm -rf {{ splunk_home }}/etc/apps/*"
+- name: empty apps directory
+  shell: "/bin/rm -rf {{ apps_dir }}/*"
 
 - name: restore default apps
-  shell: "mv {{ ansible_tmp }}/* {{ splunk_home }}/etc/apps/"
+  shell: "mv {{ ansible_tmp }}/* {{ apps_dir }}/"

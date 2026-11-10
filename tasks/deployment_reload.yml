@@ -1,2 +1,3 @@
 - name: reload deployment
-  shell: "{{ splunk_home }}/bin/splunk reload deploy-server"
+  shell: "{{ splunk_home }}/bin/splunk reload deploy-server -auth {{ splunk_user }}:{{ splunk_password }}"
+  no_log: true

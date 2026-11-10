@@ -1,2 +1,3 @@
 - name: apply cluster bundle
-  shell: "{{ splunk_home }}/bin/splunk apply cluster-bundle --answer-yes"
+  shell: "{{ splunk_home }}/bin/splunk apply cluster-bundle --answer-yes -auth {{ splunk_user }}:{{ splunk_password }}"
+  no_log: true

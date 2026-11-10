@@ -1,2 +1,3 @@
 - name: apply shcluster-bundle
   shell: "{{ splunk_home }}/bin/splunk apply shcluster-bundle --answer-yes -target {{ shcluster_bundle_target }} -preserve-lookups {{ preserve_lookups }} -auth {{ splunk_user }}:{{ splunk_password }}"
+  no_log: true

@@ -6,6 +6,7 @@ git_repo_destination: /tmp/splunk_apps         # Directory where repo should be 
 localhost_user: vagrant                        # A local host user that will be used to pull the git repo. Use ssh keys for authentication with Git
 use_repo: true                                 # If you do not wish to pull the repo as part of the playbook, set to false
 template_directory: templates                  # Directory name used for templates in Splunk Apps and Add-ons
+app_variables_file: variables.yml              # File name used for app specific template variables in Splunk Apps and Add-ons
 
 # Remote Settings
 remote_ansible_user: vagrant                   # Remote Server / Splunk server user
@@ -18,7 +19,9 @@ remove_cluster_app: false                      # If true removes $SPLUNK_HOME/et
 # Splunk Settings
 splunk_home: /opt/splunk                       # Splunk home directory
 # The list of (default) apps that will be backed up and restored when cleaning etc/apps.
-splunk_default_apps: ['alert_logevent', 'appsbrowser', 'framework', 'introspection_generator_addon', 'learned', 'sample_app', 'splunk_archiver', 'splunk_httpinput', 'SplunkLightForwarder', 'user-prefs', 'alert_webhook', 'gettingstarted', 'launcher', 'legacy', 'search', 'SplunkForwarder', 'splunk_instrumentation', 'splunk_monitoring_console']
+# Verify against 'ls $SPLUNK_HOME/etc/apps' on a fresh install of your Splunk version; names that are not present are skipped.
+splunk_default_apps: ['alert_logevent', 'appsbrowser', 'framework', 'introspection_generator_addon', 'learned', 'sample_app', 'splunk_archiver', 'splunk_httpinput', 'SplunkLightForwarder', 'user-prefs', 'alert_webhook', 'gettingstarted', 'launcher', 'legacy', 'search', 'SplunkForwarder', 'splunk_instrumentation', 'splunk_monitoring_console',
+                      'journald_input', 'python_upgrade_readiness_app', 'splunk_assist', 'splunk_gdi', 'splunk_ingest_actions', 'splunk_internal_metrics', 'splunk_metrics_workspace', 'splunk_rapid_diag', 'splunk_secure_gateway', 'splunk-dashboard-studio', 'splunk-visual-exporter']
 preserve_lookups: "true"                       # Preserve lookups value for 'apply shcluster-bundle'
 shcluster_bundle_target: "https://sh1:8089"    # Default Search Head cluster to be used as part of 'apply shcluster-bundle'
 # In production environment the below attributes should be defined in the vault

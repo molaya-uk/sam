@@ -1,0 +1,20 @@
+# Common steps for every play deploying apps to a Splunk tier. The play defines:
+#   app_tags    - manifest server_tags selecting the apps for this play
+#   apps_dir    - directory the apps are copied to
+#   clear_tasks - task file emptying apps_dir before copying
+#   apply_tasks - task file applying the configuration
+- name: load the environment file
+  include_vars:
+    file: "{{ template_definition }}"
+  when: template_definition is defined
+
+- include_tasks: "{{ clear_tasks }}"
+  when: remove_before_copying
+
+- include_tasks: "apps.yml"
+  with_subelements:
+  - "{{ manifest }}"
+  - server_tags
+  when: item.1 in app_tags
+
+- include_tasks: "{{ apply_tasks }}"

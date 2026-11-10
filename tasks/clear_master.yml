@@ -1,7 +1,6 @@
 - name: empty master-apps directory
-  shell: "/bin/rm -rf {{ splunk_home }}/etc/master-apps/*"
+  shell: "/bin/rm -rf {{ apps_dir }}/*"
   when: remove_cluster_app
 
 - name: empty master-apps directory preserve default
-  shell: "for app in $( ls {{ splunk_home }}/etc/master-apps/ | grep -v _cluster ); do rm -r {{ splunk_home }}/etc/master-apps/$app; done"
-
+  shell: "for app in $( ls {{ apps_dir }}/ | grep -v _cluster ); do rm -r {{ apps_dir }}/$app; done"
